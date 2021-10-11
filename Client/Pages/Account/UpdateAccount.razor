@@ -1,0 +1,62 @@
+﻿@page "/Account/Update/{id}"
+@inject IUpdateAccountViewModel updateViewModel
+
+
+<div class="card p-3 w-50 m-auto">
+    <h1 class="h2 font-weight-normal login-title">
+        Update user
+    </h1>
+    <EditForm class="form-signin" OnValidSubmit="updateViewModel.OnSubmit" Model="updateViewModel" autocomplete="off">
+        <DataAnnotationsValidator />
+
+        <input type="hidden" @bind-value="@updateViewModel.Id" />
+        <div class="form-group">
+            <label for="inputUsername">User Name</label>
+            <InputText id="inputUsername" class="form-control" placeholder="Username" autofocus @bind-Value="@updateViewModel.UserName" />
+            <ValidationMessage For="@(() => updateViewModel.UserName)" />
+        </div>
+
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <InputText type="password" id="inputPassword" class="form-control" placeholder="Password" @bind-Value="@updateViewModel.Password" />
+            <ValidationMessage For="@(() => updateViewModel.Password)" />
+        </div>
+
+        <div class="form-group">
+            <label for="inputPasswordConfirm">Password Confirmation</label>
+            <InputText type="password" id="inputPasswordConfirm" class="form-control" placeholder="Password Confirmation" @bind-Value="@updateViewModel.PasswordConfirm" />
+            <ValidationMessage For="@(() => updateViewModel.PasswordConfirm)" />
+        </div>
+
+        <div class="form-group">
+            <label for="inputRole">Role</label>
+            <InputSelect id="inputRole" @bind-Value="updateViewModel.RoleName" class="form-control">
+                <option value="0">Select role...</option>
+                @foreach (var role in updateViewModel.Roles)
+                {
+                    <option value="@role">@role</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="form-group">
+            <label for="inputAccessCode">Access code (QR)</label>
+            <InputText type="password" id="inputAccessCode" class="form-control" placeholder="Access code (QR)" @bind-Value="@updateViewModel.AccessCode" />
+            <ValidationMessage For="@(() => updateViewModel.AccessCode)" />
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block mt-2" type="submit">Update account</button>
+
+        <label class="text-danger">@updateViewModel.Error</label>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await updateViewModel.OnInitialize(Id);
+    }
+}

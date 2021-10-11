@@ -1,0 +1,40 @@
+﻿@inject INavMenuViewModel navMenuViewModel
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href=""><img src="/Pictures/steinel.png" height="20" /></a>
+    <span style="font-weight:bold;color:black">APPQ</span>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <AuthorizeView>
+        <p class="border-bottom" style="color:black; font-weight:bold; margin-bottom:1px; margin-left:5px;">
+            @context.User.Identity.Name &nbsp;
+            [@context.User.FindFirst(ClaimTypes.Role).Value]
+            <button class="btn btn-link btn-sm float-right" @onclick="navMenuViewModel.Logout">Logout</button>
+        </p>
+    </AuthorizeView>
+    <ul class="nav flex-column">
+        <AuthorizeView Roles="Admin">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Accounts" Match="NavLinkMatch.Prefix">
+                    <span class="oi oi-people" aria-hidden="true"></span> Accounts
+                </NavLink>
+            </li>
+        </AuthorizeView>
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

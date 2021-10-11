@@ -1,0 +1,30 @@
+﻿@inherits LayoutComponentBase
+
+@inject IMainLayoutViewModel mainLayoutViewModel
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <div class="main">
+        <div class="top-row px-4" style="z-index:1">
+            <AuthorizeView>
+                <NotAuthorized>
+                    <button class="btn btn-link btn-sm" @onclick="mainLayoutViewModel.Login">Login</button>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+
+        <div class="content px-4 container-fluid">
+            @Body
+        </div>
+    </div>
+</div>
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        await mainLayoutViewModel.RedirectIfNotAuthenticatedAsync();
+    }
+}

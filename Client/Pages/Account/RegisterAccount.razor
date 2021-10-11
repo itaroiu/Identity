@@ -1,0 +1,58 @@
+﻿@page "/Account/Register"
+@inject IRegisterAccountViewModel registerViewModel
+
+
+<div class="card p-3 w-50 m-auto">
+    <h1 class="h2 font-weight-normal login-title">
+        Register user
+    </h1>
+    <EditForm class="form-signin" OnValidSubmit="registerViewModel.OnSubmit" Model="registerViewModel">
+        <DataAnnotationsValidator />
+
+        <div class="form-group">
+            <label for="inputUsername">User Name</label>
+            <InputText id="inputUsername" class="form-control" placeholder="Username" autofocus @bind-Value="@registerViewModel.UserName" />
+            <ValidationMessage For="@(() => registerViewModel.UserName)" />
+        </div>
+
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <InputText type="password" id="inputPassword" class="form-control" placeholder="Password" @bind-Value="@registerViewModel.Password" />
+            <ValidationMessage For="@(() => registerViewModel.Password)" />
+        </div>
+
+        <div class="form-group">
+            <label for="inputPasswordConfirm">Password Confirmation</label>
+            <InputText type="password" id="inputPasswordConfirm" class="form-control" placeholder="Password Confirmation" @bind-Value="@registerViewModel.PasswordConfirm" />
+            <ValidationMessage For="@(() => registerViewModel.PasswordConfirm)" />
+        </div>
+
+        <div class="form-group">
+            <label for="inputRole">Role</label>
+            <InputSelect id="inputRole" @bind-Value="registerViewModel.RoleName" class="form-control">
+                <option value="0">Select role...</option>
+                @foreach (var role in registerViewModel.Roles)
+                {
+                    <option value="@role">@role</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="form-group">
+            <label for="inputAccessCode">Access code (QR)</label>
+            <InputText type="password" id="inputAccessCode" class="form-control" placeholder="Access code (QR)" @bind-Value="@registerViewModel.AccessCode" />
+            <ValidationMessage For="@(() => registerViewModel.AccessCode)" />
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block mt-2" type="submit">Create account</button>
+
+        <label class="text-danger">@registerViewModel.Error</label>
+    </EditForm>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await registerViewModel.OnInitialize();
+    }
+}

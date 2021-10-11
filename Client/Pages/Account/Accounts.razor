@@ -1,0 +1,35 @@
+﻿@page "/Accounts"
+@inject IAccountsViewModel accountsViewModel
+
+<NavLink class="nav-link float-right" href="/Account/Register" Match="NavLinkMatch.Prefix">
+    <span class="oi oi-person" aria-hidden="true"></span> Register new account
+</NavLink>
+
+<table class="table table-borderless table-hover">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in accountsViewModel.Accounts)
+        {
+            <tr>
+                <td>@account.UserName</td>
+                <td>
+                    @account.RoleName
+                <button class="btn btn-link float-right" @onclick=@(()=>accountsViewModel.UpdateAccount(account.UserId))>Update</button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code{
+    protected override async Task OnInitializedAsync()
+    {
+        await accountsViewModel.OnInitialize();
+    }
+
+}
